@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Corona Meter
+{% endblock %}
+
+{% block body %}
+<div class="text-center text-primary"><h3>Indian State</h3></div>
+<table id="example" class="table table-striped sticky-header" style="width:100%">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>State</th>
+            <th>Confirmed</th>
+            <th>Deaths</th>
+            <th>New cases</th>
+            <th>New Death</th>
+            <th>New recovered</th>
+            <th>Active cases</th>
+            <th>Total Recovered</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cases in data %}
+        {% if cases["state"] != 'Total' %}
+        <tr>
+            <td><a href="corona/state_wise/{{ cases['state'] }}">{{ cases["state"] }}</a></td>
+            <td class="bg-warning text-right text-white">{{ cases["confirmed"] }}</td>
+            <td class="text-right">{{ cases["deaths"] }}</td>
+            <td class="text-warning text-right">{{ cases["deltaconfirmed"] }}</td>
+            <td class="text-danger text-right">{{ cases["deltadeaths"] }}</td>
+            <td class="text-success text-right">{{ cases["deltarecovered"] }}</td>
+            <td class="text-primary text-right">{{ cases["active"] }}</td>
+            <td class="bg-success text-white text-right">{{ cases["recovered"] }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+    <tfoot style="background-color: gray;" class="text-white">
+        <tr>
+        {% for cases in data %}
+        {% if cases["state"] == 'Total' %}
+        <tr>
+            <td>{{ cases["state"] }}</td>
+            <td>{{ cases["confirmed"] }}</td>
+            <td>{{ cases["deaths"] }}</td>
+            <td>{{ cases["deltaconfirmed"] }}</td>
+            <td>{{ cases["deltadeaths"] }}</td>
+            <td>{{ cases["deltarecovered"] }}</td>
+            <td>{{ cases["active"] }}</td>
+            <td>{{ cases["recovered"] }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        </tr>
+    </tfoot>
+</table>
+<script>
+    $(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>
+{% endblock %}
